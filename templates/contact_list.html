@@ -1,0 +1,61 @@
+{% extends 'logout.html' %}
+
+{% block f2 %}
+{#    <h4>发送消息</h4>#}
+{#        <input placeholder="接受者" id="to" />#}
+{#        <input placeholder="消息内容" id="msg" />#}
+{#        <input type="button" value="发送" onclick="sendMsg();" />#}
+    <div style="font-size: 17px;color: white;line-height: 40px">用户列表（{{ user_list.MemberCount }}）</div>
+     <span style="margin-left: 14px;">
+         <input placeholder="搜索" style="width: 264px"  />
+         <input type="button" value="搜索"  />
+     </span>
+     <hr style="border:0.5px dotted darkgray"/>
+    {% for user in user_list.MemberList %}
+        <div username="{{ user.UserName }}">
+            <li style="Word-break:break-all;">
+                <img style="width: 50px;height: 50px;" src="/avatar.html?prev={{ user.HeadImgUrl }}">
+                <span style="margin-left: 27px;font-size: 15px;color: white">
+                    昵称:{{ user.NickName }}
+                </span>
+            </li>
+            <span ><textarea rows="1" cols="45" style="background-color: black;width: 82%;height:100%">{{ user.UserName }}</textarea></span>
+        </div>
+        <hr style="border:0.5px dotted darkgray"/>
+    {% endfor %}
+
+{% endblock %}
+
+
+{% block f22 %}
+ <script src="/static/jquery-3.2.1.js"></script>
+    <script>
+        $(function () {
+            getMsg();
+        });
+
+        function getMsg() {
+            $.ajax({
+                url: '/get_msg.html',
+                type: 'GET',
+                success:function (arg) {
+                    //console.log(arg);
+                    getMsg();
+                }
+            })
+        }
+
+
+        function  sendMsg() {
+            $.ajax({
+                url: '/send_msg.html',
+                type: "POST",
+                data: {'to': $('#to').val(), 'msg': $('#msg').val()},
+                success:function (arg) {
+                    alert(arg);
+                }
+            })
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'logout.html' %}
+
+
+{% block f1 %}
+    <span style="margin-left: 28px;">
+         <input placeholder="搜索" style="width: 264px"  />
+         <input type="button" value="搜索"  />
+     </span>
+    <h4 style="color: white">个人信息</h4>
+    <div style="list-style-type:none;">
+        <li>
+            <img style="width: 60px;height: 60px;margin-left: 15px" src="/avatar.html?prev={{ request.session.INIT_DICT.User.HeadImgUrl }}">
+        </li>
+        <p style="float: right;margin-right: 151px;margin-top: -47px">
+            昵称：{{ request.session.INIT_DICT.User.NickName }}
+        </p>
+        <p style="float: right;margin-right:242px;margin-top: -17px">
+            <a>微信号：</a>
+        </p>
+    </div>
+{#    <h4>收消息</h4>#}
+{#     <textarea id="i1" name="content" class="form-control" rows="6" >{{ user.NickName }}</textarea>#}
+{#    <h4>发送消息</h4>#}
+{#        <input placeholder="接受者" id="to"/>#}
+{#        <input placeholder="消息内容" id="msg"/>#}
+{#        <input type="button" value="发送" onclick="sendMsg();"/>#}
+
+    <h4 style="color: white">最近联系人</h4>
+    <hr style="border:0.5px dotted darkgray"/>
+    <ul style="line-height: 40px; list-style-type:none;margin-left: -22px;Word-break:break-all">
+        {% for user in  request.session.INIT_DICT.ContactList %}
+            <li style=" ">
+                <img style="width: 40px;height: 40px" src="/avatar.html?prev={{ user.HeadImgUrl }}">
+                <span style="margin-left: 23px">
+                    昵称:{{ user.NickName }}
+                </span>
+            </li>
+            <span >
+                    @号码:{{ user.UserName }}
+            </span>
+            <hr style="border:0.5px dotted darkgray"/>
+        {% endfor %}
+    </ul>
+    <a style="color: white" href="/contact_list.html">更多联系人</a>
+    <h4 style="color: white">公众号信息</h4>
+{% endblock %}
+
+
+
+
+{% block f11 %}
+ <script src="/static/jquery-3.2.1.js"></script>
+    <script>
+        $(function () {
+            getMsg();
+        });
+
+        function getMsg() {
+            $.ajax({
+                url: '/get_msg.html',
+                type: 'GET',
+                success:function (arg) {
+                    //console.log(arg);
+                    getMsg();
+                }
+            })
+        }
+
+
+        function  sendMsg() {
+            $.ajax({
+                url: '/send_msg.html',
+                type: "POST",
+                data: {'to': $('#to').val(), 'msg': $('#msg').val()},
+                success:function (arg) {
+                    alert(arg);
+                }
+            })
+        }
+    </script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

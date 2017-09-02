@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信网页版</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    <link href="../static/demo/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/demo/css/nifty.min.css" rel="stylesheet">
+    <link href="../static/demo/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+    <link href="../static/demo/css/demo/nifty-demo.min.css" rel="stylesheet">
+    <link href="../static/demo/plugins/magic-check/css/magic-check.min.css" rel="stylesheet">
+    <link href="../static/demo/plugins/pace/pace.min.css" rel="stylesheet">
+    <script src="../static/demo/plugins/pace/pace.min.js"></script>
+    <script src="../static/demo/js/jquery.min.js"></script>
+    <script src="../static/demo/js/bootstrap.min.js"></script>
+    <script src="../static/demo/js/nifty.min.js"></script>
+    <script src="../static/demo/js/demo/bg-images.js"></script>
+</head>
+<body>
+<div id="container" class="cls-container">
+
+    <div id="bg-overlay">
+    </div>
+
+    <div class="cls-content">
+        <div class="cls-content-sm panel">
+            {# ------------ 二维码生成开始----------------- #}
+            <div class="panel-body">
+                <div class="mar-ver pad-btm">
+                    <h1 class="h3">◇◇◇WeChat◇◇◇</h1>
+                    <p>使用手机微信扫码登录</p>
+                </div>
+                <div>
+                    <img style="height: 270px;width: 270px;" id="img" src="https://login.weixin.qq.com/qrcode/{{ uuid }}">
+                </div>
+            </div>
+            {# ---------------------- 二维码生成结束 ---------------------#}
+            <div class="pad-all">
+                {#		            <a href="#" class="btn-link mar-rgt">Scan to log in to WeChat</a>#}
+                {#		            <a href="#" class="btn-link mar-lft">Log in on phone to use WeChat on Web</a>#}
+                <div class="media pad-top bord-top">
+                    <div class="pull-right">
+                        <a href="#" class="pad-rgt"><i class="demo-psi-facebook icon-lg text-primary"></i></a>
+                        <a href="#" class="pad-rgt"><i class="demo-psi-twitter icon-lg text-info"></i></a>
+                        <a href="#" class="pad-rgt"><i class="demo-psi-google-plus icon-lg text-danger"></i></a>
+                    </div>
+                    <div class="media-body text-left">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="demo-bg">
+        <div id="demo-bg-list">
+            <div class="demo-loading"><i class="psi-repeat-2"></i></div>
+            <img class="demo-chg-bg bg-trans active" src="../static/demo/img/bg-img/thumbs/bg-trns.jpg" alt="Background Image">
+            <img class="demo-chg-bg" src="../static/demo/img/bg-img/thumbs/bg-img-1.jpg" alt="Background Image">
+            <img class="demo-chg-bg" src="../static/demo/img/bg-img/thumbs/bg-img-2.jpg" alt="Background Image">
+            <img class="demo-chg-bg" src="../static/demo/img/bg-img/thumbs/bg-img-3.jpg" alt="Background Image">
+            <img class="demo-chg-bg" src="../static/demo/img/bg-img/thumbs/bg-img-4.jpg" alt="Background Image">
+            <img class="demo-chg-bg" src="../static/demo/img/bg-img/thumbs/bg-img-5.jpg" alt="Background Image">
+            <img class="demo-chg-bg" src="../static/demo/img/bg-img/thumbs/bg-img-6.jpg" alt="Background Image">
+            <img class="demo-chg-bg" src="../static/demo/img/bg-img/thumbs/bg-img-7.jpg" alt="Background Image">
+        </div>
+    </div>
+</div>
+</body>
+<script src="/static/jquery-3.2.1.js"></script>
+<!-- 页面加载完之后发生ajax请求，                                                         -->
+<script>
+    $(function () {
+        checkLogin();
+    });
+    function checkLogin() {
+        $.ajax({
+            url: '/check_login.html',
+            type: 'get',
+            data: {},
+            dataType: 'JSON',
+            success: function (arg) {
+                if (arg.code == 408) {
+                    checkLogin();
+                } else if (arg.code == 201) {
+                    $('#img').attr('src', arg.data);
+                    checkLogin();
+                } else {
+                    location.href = "/index.html"
+                }
+            }
+        })
+    }
+</script>
+</html>
